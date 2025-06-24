@@ -1,0 +1,376 @@
+import DeductionModule from '../index';
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  doc, 
+  updateDoc, 
+  getDoc, 
+  getDocs, 
+  query, 
+  where, 
+  orderBy, 
+  deleteDoc 
+} from 'firebase/firestore';
+
+// Mock Firestore
+jest.mock('firebase/firestore');
+
+describe('DeductionModule', () => {
+  const mockUserId = 'test-user-123';
+  const mockDeductionId = 'test-deduction-123';
+  
+  beforeEach(() => {
+    jest.clearAllMocks();
+    
+    // Mock Firestore functions
+    getFirestore.mockReturnValue({});
+    collection.mockReturnValue({});
+    doc.mockReturnValue({});
+    query.mockReturnValue({});
+    where.mockReturnValue({});
+    orderBy.mockReturnValue({});
+    
+    // Add helper methods to mocks for easier testing
+    getDocs.failNextCall = (errorMessage) => {
+      getDocs.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)));
+    };
+    
+    getDoc.failNextCall = (errorMessage) => {
+      getDoc.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)));
+    };
+    
+    updateDoc.failNextCall = (errorMessage) => {
+      updateDoc.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)));
+    };
+  });
+
+  describe('getCategories', () => {
+    it('should return the list of deduction categories', () => {
+      const categories = DeductionModule.getCategories();
+      expect(categories).toBeInstanceOf(Array);
+      expect(categories.length).toBeGreaterThan(0);
+      expect(categories).toContain('Food & Meals');
+      expect(categories).toContain('Travel');
+    });
+  });
+
+  describe('addDeduction', () => {
+    it('should add a deduction successfully', async () => {
+      const mockDeductionData = {
+        amount: '125.50',
+        category: 'Travel',
+        date: new Date('2025-06-01'),
+        description: 'Business trip to client',
+        profileId: 'profile-123'
+      };
+      
+      addDoc.mockResolvedValueOnce({ id: mockDeductionId });
+      
+      const result = await DeductionModule.addDeduction(mockUserId, mockDeductionData);
+      
+      expect(addDoc).toHaveBeenCalled();
+      expect(result.success).toBe(true);
+      expect(result.deductionId).toBe(mockDeductionId);
+    });
+    
+    it('should handle errors when adding a deduction', async () => {
+      const mockDeductionData = {
+        amount: '125.50',
+        category: 'Travel'
+      };
+      
+      const mockError = new Error('Firestore error');
+      // Use mockImplementationOnce for more reliable rejection
+      addDoc.mockImplementationOnce(() => Promise.reject(mockError));
+      
+      const result = await DeductionModule.addDeduction(mockUserId, mockDeductionData);
+      
+      expect(result.success).toBe(false);
+      expect(result.error).toBe(mockError.message);
+    });
+    
+    it('should convert string amount to number', async () => {
+      const mockDeductionData = {
+        amount: '125.50',
+        category: 'Travel'
+      };
+      
+      addDoc.mockResolvedValueOnce({ id: mockDeductionId });
+      
+      await DeductionModule.addDeduction(mockUserId, mockDeductionData);
+      
+      // Check that the first argument of the first call had amount as a number
+      const calledWith = addDoc.mock.calls[0][1];
+      expect(typeof calledWith.amount).toBe('number');
+      expect(calledWith.amount).toBe(125.50);
+    });
+  });
+
+  describe('updateDeduction', () => {
+    it('should update a deduction successfully', async () => {
+      const mockUpdateData = {
+        amount: '200.00',
+        description: 'Updated description'
+      };
+      
+      updateDoc.mockResolvedValueOnce({});
+      
+      const result = await DeductionModule.updateDeduction(
+        mockUserId, 
+        mockDeductionId, 
+        mockUpdateData
+      );
+      
+      expect(updateDoc).toHaveBeenCalled();
+      expect(result.success).toBe(true);
+    });
+    
+    it('should handle errors when updating a deduction', async () => {
+      const mockUpdateData = {
+        amount: '200.00'
+      };
+      
+      const mockError = new Error('Update error');
+      updateDoc.mockImplementationOnce(() => Promise.reject(mockError));
+      
+      const result = await DeductionModule.updateDeduction(
+        mockUserId, 
+        mockDeductionId, 
+        mockUpdateData
+      );
+      
+      expect(result.success).toBe(false);
+      expect(result.error).toBe(mockError.message);
+    });
+  });
+
+  describe('deleteDeduction', () => {
+    it('should delete a deduction successfully', async () => {
+      deleteDoc.mockResolvedValueOnce({});
+      
+      const result = await DeductionModule.deleteDeduction(mockUserId, mockDeductionId);
+      
+      expect(deleteDoc).toHaveBeenCalled();
+      expect(result.success).toBe(true);
+    });
+    
+    it('should handle errors when deleting a deduction', async () => {
+      const mockError = new Error('Delete error');
+      // Use mockImplementationOnce for more reliable rejection
+      deleteDoc.mockImplementationOnce(() => Promise.reject(mockError));
+      
+      const result = await DeductionModule.deleteDeduction(mockUserId, mockDeductionId);
+      
+      expect(result.success).toBe(false);
+      expect(result.error).toBe(mockError.message);
+    });
+  });
+
+  describe('getDeduction', () => {
+    it('should get a deduction by ID successfully', async () => {
+      // Define the mock deduction data that will be returned
+      const mockDeductionData = {
+        amount: 100,
+        category: 'Office',
+        date: new Date(),
+        description: 'Test description',
+        isActive: true,
+        name: 'Test Document',
+        profileId: 'profile-1',
+        userId: 'user-1'
+      };
+      
+      // Create a custom mock for this test
+      getDoc.mockImplementationOnce(() => Promise.resolve({
+        exists: () => true,
+        id: 'test-doc-id',
+        data: () => mockDeductionData
+      }));
+      
+      const result = await DeductionModule.getDeduction(mockUserId, mockDeductionId);
+      
+      expect(getDoc).toHaveBeenCalled();
+      expect(result.success).toBe(true);
+      // Update the expected result to match what our mock returns
+      expect(result.deduction).toEqual({
+        id: 'test-doc-id',
+        ...mockDeductionData
+      });
+    });
+    
+    it('should handle non-existent deduction', async () => {
+      // Create a custom mock that returns a document that doesn't exist
+      getDoc.mockImplementationOnce(() => Promise.resolve({
+        exists: () => false,
+        id: mockDeductionId
+      }));
+      
+      const result = await DeductionModule.getDeduction(mockUserId, mockDeductionId);
+      
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('Deduction not found');
+    });
+    
+    it('should handle errors when getting a deduction', async () => {
+      const mockError = new Error('Get error');
+      // Use mockImplementationOnce for more reliable rejection
+      getDoc.mockImplementationOnce(() => Promise.reject(mockError));
+      
+      const result = await DeductionModule.getDeduction(mockUserId, mockDeductionId);
+      
+      expect(result.success).toBe(false);
+      expect(result.error).toBe(mockError.message);
+    });
+  });
+
+  describe('getDeductions', () => {
+    it('should get all deductions without filters', async () => {
+      const mockDeductions = [
+        { id: 'deduction-1', amount: 100, category: 'Travel' },
+        { id: 'deduction-2', amount: 200, category: 'Food & Meals' }
+      ];
+      
+      const mockForEach = jest.fn((callback) => {
+        mockDeductions.forEach((item, index) => {
+          callback({
+            id: item.id,
+            data: () => ({ amount: item.amount, category: item.category })
+          });
+        });
+      });
+      
+      getDocs.mockResolvedValueOnce({
+        forEach: mockForEach
+      });
+      
+      const result = await DeductionModule.getDeductions(mockUserId);
+      
+      expect(getDocs).toHaveBeenCalled();
+      expect(result.success).toBe(true);
+      expect(result.deductions.length).toBe(2);
+      expect(result.deductions[0].id).toBe('deduction-1');
+      expect(result.deductions[1].id).toBe('deduction-2');
+    });
+    
+    it('should apply filters when provided', async () => {
+      const filters = {
+        category: 'Travel',
+        profileId: 'profile-123',
+        startDate: new Date('2025-01-01'),
+        endDate: new Date('2025-12-31')
+      };
+      
+      getDocs.mockResolvedValueOnce({
+        forEach: jest.fn()
+      });
+      
+      await DeductionModule.getDeductions(mockUserId, filters);
+      
+      // Verify that where was called for each filter
+      expect(where).toHaveBeenCalledWith('category', '==', filters.category);
+      expect(where).toHaveBeenCalledWith('profileId', '==', filters.profileId);
+      expect(where).toHaveBeenCalledWith('date', '>=', filters.startDate);
+      expect(where).toHaveBeenCalledWith('date', '<=', filters.endDate);
+      
+      // Verify that orderBy was called
+      expect(orderBy).toHaveBeenCalledWith('date', 'desc');
+    });
+    
+    it('should handle errors when getting deductions', async () => {
+      const mockError = new Error('Query error');
+      // Use our helper method for more reliable rejection
+      getDocs.failNextCall(mockError.message);
+      
+      const result = await DeductionModule.getDeductions(mockUserId);
+      
+      expect(result.success).toBe(false);
+      expect(result.error).toBe(mockError.message);
+    });
+  });
+
+  describe('linkReceiptToDeduction', () => {
+    it('should link a receipt to a deduction successfully', async () => {
+      const mockReceiptId = 'receipt-123';
+      updateDoc.mockResolvedValueOnce({});
+      
+      const result = await DeductionModule.linkReceiptToDeduction(
+        mockUserId, 
+        mockDeductionId, 
+        mockReceiptId
+      );
+      
+      expect(updateDoc).toHaveBeenCalled();
+      expect(result.success).toBe(true);
+    });
+    
+    it('should handle errors when linking a receipt', async () => {
+      const mockError = new Error('Link error');
+      // Use mockImplementationOnce for more reliable rejection
+      updateDoc.mockImplementationOnce(() => Promise.reject(mockError));
+      
+      const result = await DeductionModule.linkReceiptToDeduction(
+        mockUserId, 
+        mockDeductionId, 
+        'receipt-123'
+      );
+      
+      expect(result.success).toBe(false);
+      expect(result.error).toBe(mockError.message);
+    });
+  });
+
+  describe('getDeductionsSummary', () => {
+    it('should calculate summary statistics correctly', async () => {
+      const mockDeductions = [
+        { 
+          id: 'deduction-1', 
+          amount: 100, 
+          category: 'Travel',
+          date: new Date('2025-01-15') 
+        },
+        { 
+          id: 'deduction-2', 
+          amount: 200, 
+          category: 'Food & Meals',
+          date: new Date('2025-02-20') 
+        },
+        { 
+          id: 'deduction-3', 
+          amount: 150, 
+          category: 'Travel',
+          date: new Date('2025-01-25') 
+        }
+      ];
+      
+      // Mock the getDeductions method
+      jest.spyOn(DeductionModule, 'getDeductions').mockResolvedValueOnce({
+        success: true,
+        deductions: mockDeductions
+      });
+      
+      const result = await DeductionModule.getDeductionsSummary(mockUserId);
+      
+      expect(result.success).toBe(true);
+      expect(result.summary.totalAmount).toBe(450);
+      expect(result.summary.totalCount).toBe(3);
+      expect(result.summary.categorySummary['Travel']).toBe(250);
+      expect(result.summary.categorySummary['Food & Meals']).toBe(200);
+      expect(result.summary.monthSummary['2025-01']).toBe(250);
+      expect(result.summary.monthSummary['2025-02']).toBe(200);
+    });
+    
+    it('should handle errors from getDeductions', async () => {
+      const mockError = new Error('Summary error');
+      jest.spyOn(DeductionModule, 'getDeductions').mockResolvedValueOnce({
+        success: false,
+        error: mockError.message
+      });
+      
+      const result = await DeductionModule.getDeductionsSummary(mockUserId);
+      
+      expect(result.success).toBe(false);
+      expect(result.error).toBe(mockError.message);
+    });
+  });
+});

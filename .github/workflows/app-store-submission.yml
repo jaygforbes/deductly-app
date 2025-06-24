@@ -1,0 +1,133 @@
+name: App Store Submission
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'App version (e.g., 1.0.0)'
+        required: true
+      build_number:
+        description: 'Build number (e.g., 1)'
+        required: true
+      release_notes:
+        description: 'Release notes for this version'
+        required: true
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run Jest tests
+        run: npm test
+        
+  update-version:
+    name: Update App Version
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Update app.json version
+        run: |
+          # Update version and build number in app.json
+          jq '.expo.version = "${{ github.event.inputs.version }}" | .expo.ios.buildNumber = "${{ github.event.inputs.build_number }}"' app.json > app.json.tmp
+          mv app.json.tmp app.json
+          
+      - name: Commit version changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add app.json
+          git commit -m "Bump version to ${{ github.event.inputs.version }} (build ${{ github.event.inputs.build_number }})"
+          git push
+  
+  build-ios:
+    name: Build iOS App
+    needs: update-version
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Setup EAS
+        run: npm install -g eas-cli
+        
+      - name: Login to Expo
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: echo $EXPO_TOKEN | npx eas-cli login
+        
+      - name: Build iOS app
+        run: npx eas-cli build --platform ios --non-interactive --profile production
+        
+      - name: Wait for build to complete
+        run: |
+          echo "Waiting for EAS build to complete..."
+          # This is a placeholder - in a real workflow you might need a custom script to poll the EAS API
+          sleep 300
+  
+  submit-to-app-store:
+    name: Submit to App Store
+    needs: build-ios
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Setup EAS
+        run: npm install -g eas-cli
+        
+      - name: Login to Expo
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: echo $EXPO_TOKEN | npx eas-cli login
+        
+      - name: Submit to App Store
+        run: npx eas-cli submit --platform ios --non-interactive --profile production
+        
+      - name: Update release notes in App Store Connect
+        run: |
+          echo "Updating release notes in App Store Connect..."
+          # This would typically use fastlane or the App Store Connect API
+          # For now, this is a placeholder
+          
+      - name: Notify team of submission
+        run: |
+          echo "App ${{ github.event.inputs.version }} (build ${{ github.event.inputs.build_number }}) has been submitted to the App Store."
+          echo "Release notes: ${{ github.event.inputs.release_notes }}"
