@@ -18,6 +18,8 @@ Deductly is a React Native mobile application designed to help freelancers, cont
 - **React Native**: Cross-platform mobile framework
 - **Expo**: Development platform for React Native
 - **Firebase**: Backend services
+- **GitHub Actions**: CI/CD automation for testing and deployment
+- **EAS Build**: Expo Application Services for building iOS and Android apps
   - Authentication: User management
   - Firestore: Database for storing deductions, trips, profiles
   - Storage: For receipt images
