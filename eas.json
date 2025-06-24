@@ -18,7 +18,7 @@
     "production": {
       "ios": {
         "appleId": "jayg44@sbcglobal.net", 
-        "ascAppId": "YOUR_APP_STORE_CONNECT_APP_ID",
+        "ascAppId": "6747609548",
         "appleTeamId": "H82MG3CLF3",
         "bundleIdentifier": "com.forbesyprojects.deductly"
       },
@@ -30,7 +30,7 @@
     "preview": {
       "ios": {
         "appleId": "jayg44@sbcglobal.net",
-        "ascAppId": "YOUR_APP_STORE_CONNECT_APP_ID",
+        "ascAppId": "6747609548",
         "appleTeamId": "H82MG3CLF3",
         "bundleIdentifier": "com.forbesyprojects.deductly"
       },
