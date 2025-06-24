@@ -1,3 +1,4 @@
+# GitHub Actions workflow for Deductly CI/CD
 name: Deductly CI/CD
 
 on:
