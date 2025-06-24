@@ -9,8 +9,7 @@ import {
   getDocs, 
   deleteDoc,
   query,
-  where,
-  Timestamp
+  where
 } from 'firebase/firestore';
 
 // Mock Firestore

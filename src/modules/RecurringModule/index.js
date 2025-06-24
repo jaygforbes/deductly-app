@@ -1,4 +1,4 @@
-import { getFirestore, collection, addDoc, doc, updateDoc, getDoc, getDocs, deleteDoc, query, where, Timestamp } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, doc, updateDoc, getDoc, getDocs, deleteDoc, query, where } from 'firebase/firestore';
 
 class RecurringModule {
   constructor() {
