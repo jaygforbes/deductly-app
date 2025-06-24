@@ -120,7 +120,7 @@ class OCRModule {
     }
     
     // Extract date
-    const dateRegex = /(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/;
+    const dateRegex = /(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})/;
     for (const line of lines) {
       const dateMatch = line.match(dateRegex);
       if (dateMatch) {
