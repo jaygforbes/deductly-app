@@ -3,14 +3,20 @@
  * Run this script in your development environment before submission
  */
 
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
-import 'firebase/storage';
-import { initializeApp } from '../src/config/firebase';
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore, collection, doc, setDoc, addDoc, serverTimestamp, query, where, getDocs } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
+import { firebaseConfig } from './firebase-config.js';
+
+// IMPORTANT: Before running this script, make sure to update the firebase-config.js file
+// with your actual Firebase configuration values from your Firebase console
 
 // Initialize Firebase
-initializeApp();
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
 /**
  * Creates a reviewer account and populates it with sample data
@@ -18,44 +24,70 @@ initializeApp();
 async function createReviewerAccount() {
   try {
     console.log('Creating reviewer account...');
+    console.log('Using Firebase project:', firebaseConfig.projectId);
     
     // Check if account already exists
     try {
-      const userCredential = await firebase.auth().signInWithEmailAndPassword(
+      console.log('Attempting to sign in with existing reviewer account...');
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
         'reviewer@deductly.com',
         'Deductly2025Review!'
       );
-      console.log('Reviewer account already exists. Signed in.');
+      console.log('Reviewer account already exists. Signed in successfully.');
       await populateReviewerData(userCredential.user.uid);
       return;
     } catch (error) {
-      if (error.code !== 'auth/user-not-found') {
+      console.log('Sign-in error:', error.code);
+      // Continue with account creation if user not found
+      // Otherwise, only throw if it's not an expected error
+      if (error.code !== 'auth/user-not-found' && 
+          error.code !== 'auth/invalid-credential' && 
+          error.code !== 'auth/invalid-email') {
         throw error;
       }
       // User doesn't exist, continue with creation
     }
     
     // Create user account
-    const userCredential = await firebase.auth().createUserWithEmailAndPassword(
-      'reviewer@deductly.com',
-      'Deductly2025Review!'
-    );
-    
-    const uid = userCredential.user.uid;
-    
-    // Add user profile
-    await firebase.firestore().collection('users').doc(uid).set({
-      email: 'reviewer@deductly.com',
-      displayName: 'App Reviewer',
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      isReviewerAccount: true
-    });
-    
-    console.log('Reviewer account created successfully!');
-    
-    // Populate with sample data
-    await populateReviewerData(uid);
-    
+    console.log('Creating new reviewer account...');
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        'reviewer@deductly.com',
+        'Deductly2025Review!'
+      );
+      
+      console.log('Reviewer account created successfully!');
+      const uid = userCredential.user.uid;
+      console.log('User ID:', uid);
+      
+      // Populate the account with sample data
+      await populateReviewerData(uid);
+      return;
+    } catch (createError) {
+      console.error('Error creating account:', createError.code);
+      
+      // If account already exists but we couldn't sign in earlier, try signing in again
+      if (createError.code === 'auth/email-already-in-use') {
+        console.log('Account already exists. Attempting to sign in again...');
+        try {
+          const signInCredential = await signInWithEmailAndPassword(
+            auth,
+            'reviewer@deductly.com',
+            'Deductly2025Review!'
+          );
+          console.log('Successfully signed in to existing account.');
+          await populateReviewerData(signInCredential.user.uid);
+          return;
+        } catch (signInError) {
+          console.error('Failed to sign in to existing account:', signInError.code);
+          throw signInError;
+        }
+      } else {
+        throw createError;
+      }
+    }
   } catch (error) {
     console.error('Error creating reviewer account:', error);
   }
@@ -68,48 +100,51 @@ async function populateReviewerData(uid) {
   try {
     console.log('Populating reviewer account with sample data...');
     
-    const db = firebase.firestore();
     const today = new Date();
     
     // Add sample job profiles
     console.log('Creating job profiles...');
     
     // Check if profiles already exist
-    const existingProfiles = await db.collection('jobProfiles')
-      .where('userId', '==', uid)
-      .get();
+    const profilesRef = collection(db, 'jobProfiles');
+    const profilesQuery = query(profilesRef, where('userId', '==', uid));
+    const existingProfiles = await getDocs(profilesQuery);
     
     let freelanceProfileId, consultingProfileId;
     
     if (!existingProfiles.empty) {
       console.log('Job profiles already exist, using existing ones');
-      existingProfiles.forEach(doc => {
-        const profile = doc.data();
+      existingProfiles.forEach(docSnapshot => {
+        const profile = docSnapshot.data();
         if (profile.name === 'Freelance Writing') {
-          freelanceProfileId = doc.id;
+          freelanceProfileId = docSnapshot.id;
         } else if (profile.name === 'Consulting') {
-          consultingProfileId = doc.id;
+          consultingProfileId = docSnapshot.id;
         }
       });
     }
     
     if (!freelanceProfileId) {
-      const freelanceProfileRef = await db.collection('jobProfiles').add({
+      const jobProfilesRef = collection(db, 'jobProfiles');
+      const freelanceProfileData = {
         userId: uid,
         name: 'Freelance Writing',
         description: 'Writing articles and blog posts',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
+        createdAt: serverTimestamp()
+      };
+      const freelanceProfileRef = await addDoc(jobProfilesRef, freelanceProfileData);
       freelanceProfileId = freelanceProfileRef.id;
     }
     
     if (!consultingProfileId) {
-      const consultingProfileRef = await db.collection('jobProfiles').add({
+      const jobProfilesRef = collection(db, 'jobProfiles');
+      const consultingProfileData = {
         userId: uid,
         name: 'Consulting',
         description: 'Business consulting services',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
+        createdAt: serverTimestamp()
+      };
+      const consultingProfileRef = await addDoc(jobProfilesRef, consultingProfileData);
       consultingProfileId = consultingProfileRef.id;
     }
     
@@ -117,9 +152,9 @@ async function populateReviewerData(uid) {
     console.log('Creating sample deductions...');
     
     // Check if deductions already exist
-    const existingDeductions = await db.collection('deductions')
-      .where('userId', '==', uid)
-      .get();
+    const deductionsRef = collection(db, 'deductions');
+    const deductionsQuery = query(deductionsRef, where('userId', '==', uid));
+    const existingDeductions = await getDocs(deductionsQuery);
     
     if (existingDeductions.empty) {
       // Create dates for the past 3 months
@@ -136,7 +171,9 @@ async function populateReviewerData(uid) {
       lastWeek.setDate(today.getDate() - 7);
       
       // Sample deductions
-      await db.collection('deductions').add({
+      const deductionsRef = collection(db, 'deductions');
+      
+      await addDoc(deductionsRef, {
         userId: uid,
         title: 'Office Supplies',
         amount: 125.99,
@@ -145,10 +182,10 @@ async function populateReviewerData(uid) {
         notes: 'Purchased printer ink and paper',
         jobProfileId: freelanceProfileId,
         receiptUrl: 'https://firebasestorage.googleapis.com/v0/b/deductly-app.appspot.com/o/sample-receipts%2Foffice-supplies.jpg?alt=media',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: serverTimestamp()
       });
       
-      await db.collection('deductions').add({
+      await addDoc(deductionsRef, {
         userId: uid,
         title: 'Business Lunch',
         amount: 45.75,
@@ -157,10 +194,10 @@ async function populateReviewerData(uid) {
         notes: 'Lunch with client discussing project',
         jobProfileId: consultingProfileId,
         receiptUrl: 'https://firebasestorage.googleapis.com/v0/b/deductly-app.appspot.com/o/sample-receipts%2Fbusiness-lunch.jpg?alt=media',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: serverTimestamp()
       });
       
-      await db.collection('deductions').add({
+      await addDoc(deductionsRef, {
         userId: uid,
         title: 'Software Subscription',
         amount: 29.99,
@@ -169,10 +206,10 @@ async function populateReviewerData(uid) {
         notes: 'Monthly Adobe Creative Cloud subscription',
         jobProfileId: freelanceProfileId,
         receiptUrl: 'https://firebasestorage.googleapis.com/v0/b/deductly-app.appspot.com/o/sample-receipts%2Fsoftware.jpg?alt=media',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: serverTimestamp()
       });
       
-      await db.collection('deductions').add({
+      await addDoc(deductionsRef, {
         userId: uid,
         title: 'Conference Registration',
         amount: 299.00,
@@ -181,7 +218,7 @@ async function populateReviewerData(uid) {
         notes: 'Annual industry conference registration fee',
         jobProfileId: consultingProfileId,
         receiptUrl: 'https://firebasestorage.googleapis.com/v0/b/deductly-app.appspot.com/o/sample-receipts%2Fconference.jpg?alt=media',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: serverTimestamp()
       });
     } else {
       console.log('Deductions already exist, skipping creation');
@@ -191,9 +228,9 @@ async function populateReviewerData(uid) {
     console.log('Creating sample mileage entries...');
     
     // Check if mileage entries already exist
-    const existingMileage = await db.collection('mileageEntries')
-      .where('userId', '==', uid)
-      .get();
+    const mileageRef = collection(db, 'mileageEntries');
+    const mileageQuery = query(mileageRef, where('userId', '==', uid));
+    const existingMileage = await getDocs(mileageQuery);
     
     if (existingMileage.empty) {
       // Create dates for mileage entries
@@ -209,7 +246,9 @@ async function populateReviewerData(uid) {
       const yesterday = new Date();
       yesterday.setDate(today.getDate() - 1);
       
-      await db.collection('mileageEntries').add({
+      const mileageEntriesRef = collection(db, 'mileageEntries');
+      
+      await addDoc(mileageEntriesRef, {
         userId: uid,
         startLocation: '123 Main St, San Francisco, CA',
         endLocation: '456 Market St, San Francisco, CA',
@@ -217,10 +256,10 @@ async function populateReviewerData(uid) {
         date: twoWeeksAgo,
         purpose: 'Client meeting',
         jobProfileId: consultingProfileId,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: serverTimestamp()
       });
       
-      await db.collection('mileageEntries').add({
+      await addDoc(mileageEntriesRef, {
         userId: uid,
         startLocation: '456 Market St, San Francisco, CA',
         endLocation: '123 Main St, San Francisco, CA',
@@ -228,10 +267,10 @@ async function populateReviewerData(uid) {
         date: twoWeeksAgo,
         purpose: 'Return from client meeting',
         jobProfileId: consultingProfileId,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: serverTimestamp()
       });
       
-      await db.collection('mileageEntries').add({
+      await addDoc(mileageEntriesRef, {
         userId: uid,
         startLocation: '123 Main St, San Francisco, CA',
         endLocation: '789 Howard St, San Francisco, CA',
@@ -239,10 +278,10 @@ async function populateReviewerData(uid) {
         date: tenDaysAgo,
         purpose: 'Meeting with potential client',
         jobProfileId: freelanceProfileId,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: serverTimestamp()
       });
       
-      await db.collection('mileageEntries').add({
+      await addDoc(mileageEntriesRef, {
         userId: uid,
         startLocation: '123 Main St, San Francisco, CA',
         endLocation: '555 Mission St, San Francisco, CA',
@@ -250,10 +289,10 @@ async function populateReviewerData(uid) {
         date: fiveDaysAgo,
         purpose: 'Networking event',
         jobProfileId: consultingProfileId,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: serverTimestamp()
       });
       
-      await db.collection('mileageEntries').add({
+      await addDoc(mileageEntriesRef, {
         userId: uid,
         startLocation: '123 Main St, San Francisco, CA',
         endLocation: '200 California St, San Francisco, CA',
@@ -261,7 +300,7 @@ async function populateReviewerData(uid) {
         date: yesterday,
         purpose: 'Client presentation',
         jobProfileId: consultingProfileId,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: serverTimestamp()
       });
     } else {
       console.log('Mileage entries already exist, skipping creation');
@@ -271,9 +310,9 @@ async function populateReviewerData(uid) {
     console.log('Creating recurring deduction templates...');
     
     // Check if recurring deductions already exist
-    const existingRecurring = await db.collection('recurringDeductions')
-      .where('userId', '==', uid)
-      .get();
+    const recurringRef = collection(db, 'recurringDeductions');
+    const recurringQuery = query(recurringRef, where('userId', '==', uid));
+    const existingRecurring = await getDocs(recurringQuery);
     
     if (existingRecurring.empty) {
       // Next month date for recurring deductions
@@ -285,7 +324,9 @@ async function populateReviewerData(uid) {
       const thisMonth = new Date();
       thisMonth.setDate(1); // First day of this month
       
-      await db.collection('recurringDeductions').add({
+      const recurringDeductionsRef = collection(db, 'recurringDeductions');
+      
+      await addDoc(recurringDeductionsRef, {
         userId: uid,
         title: 'Office Rent',
         amount: 850,
@@ -296,10 +337,10 @@ async function populateReviewerData(uid) {
         isActive: true,
         jobProfileId: freelanceProfileId,
         notes: 'Monthly office space rental',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: serverTimestamp()
       });
       
-      await db.collection('recurringDeductions').add({
+      await addDoc(recurringDeductionsRef, {
         userId: uid,
         title: 'Software Subscription',
         amount: 29.99,
@@ -310,10 +351,10 @@ async function populateReviewerData(uid) {
         isActive: true,
         jobProfileId: freelanceProfileId,
         notes: 'Adobe Creative Cloud subscription',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: serverTimestamp()
       });
       
-      await db.collection('recurringDeductions').add({
+      await addDoc(recurringDeductionsRef, {
         userId: uid,
         title: 'Cell Phone',
         amount: 75.00,
@@ -324,7 +365,7 @@ async function populateReviewerData(uid) {
         isActive: true,
         jobProfileId: null, // Applies to all profiles
         notes: 'Business portion of cell phone bill',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: serverTimestamp()
       });
       
       // Quarterly expense
@@ -336,7 +377,7 @@ async function populateReviewerData(uid) {
       lastQuarter.setMonth(Math.floor(today.getMonth() / 3) * 3);
       lastQuarter.setDate(1);
       
-      await db.collection('recurringDeductions').add({
+      await addDoc(recurringDeductionsRef, {
         userId: uid,
         title: 'Professional Membership',
         amount: 120.00,
@@ -347,7 +388,7 @@ async function populateReviewerData(uid) {
         isActive: true,
         jobProfileId: consultingProfileId,
         notes: 'Professional association membership fee',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: serverTimestamp()
       });
       
       // Yearly expense
@@ -361,7 +402,7 @@ async function populateReviewerData(uid) {
       lastYear.setMonth(0);
       lastYear.setDate(1);
       
-      await db.collection('recurringDeductions').add({
+      await addDoc(recurringDeductionsRef, {
         userId: uid,
         title: 'Business Insurance',
         amount: 500.00,
@@ -372,7 +413,7 @@ async function populateReviewerData(uid) {
         isActive: true,
         jobProfileId: null, // Applies to all profiles
         notes: 'Annual business liability insurance premium',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: serverTimestamp()
       });
     } else {
       console.log('Recurring deductions already exist, skipping creation');
