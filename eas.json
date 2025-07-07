@@ -21,10 +21,9 @@
       },
       "env": {
         "EXPO_BUNDLE_IOS": "true",
-        "EXPO_USE_PREBUILD_IOS": "true",
-        "EXPO_SKIP_BUNDLING": "1"
+        "EXPO_USE_PREBUILD_IOS": "true"
       },
-      "prebuildCommand": "./scripts/prepare-ios-bundle.sh && echo 'Bundle preparation completed'"
+      "prebuildCommand": "node ./scripts/create-ios-bundle.js && echo 'Bundle preparation completed'"
     },
     "app-store": {
       "extends": "production",
@@ -33,9 +32,14 @@
         "resourceClass": "m1-medium",
         "image": "latest",
         "credentialsSource": "remote",
-        "buildConfiguration": "Release"
+        "buildConfiguration": "Release",
+        "scheme": "Deductly"
       },
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "EXPO_BUNDLE_IOS": "true",
+        "EXPO_USE_PREBUILD_IOS": "true"
+      }
     }
   },
   "submit": {

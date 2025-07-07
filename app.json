@@ -20,6 +20,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.forbesyprojects.deductly",
       "buildNumber": "1.0.0",
+      "jsEngine": "hermes",
+      "bundleCommand": "node ./scripts/create-ios-bundle.js",
       "infoPlist": {
         "NSCameraUsageDescription": "Deductly uses the camera to capture receipts for expense tracking.",
         "NSLocationWhenInUseUsageDescription": "Deductly uses your location to track mileage for tax deductions.",
