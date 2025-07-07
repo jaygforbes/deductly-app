@@ -89,9 +89,14 @@ const EditProfileScreen = ({ navigation, route }) => {
   };
 
   const styles = StyleSheet.create({
+    businessTypesContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginTop: 8,
+    },
     container: {
-      flex: 1,
       backgroundColor: theme.background,
+      flex: 1,
     },
     content: {
       flex: 1,
@@ -100,53 +105,55 @@ const EditProfileScreen = ({ navigation, route }) => {
     header: {
       marginBottom: 24,
     },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
+    input: {
+      backgroundColor: theme.surface,
+      borderColor: theme.border,
+      borderRadius: 8,
+      borderWidth: 1,
       color: theme.text,
-    },
-    subtitle: {
       fontSize: 16,
-      color: theme.textSecondary,
-      marginTop: 4,
+      padding: 12,
     },
     inputGroup: {
       marginBottom: 20,
     },
     label: {
+      color: theme.text,
       fontSize: 16,
       fontWeight: '500',
-      color: theme.text,
       marginBottom: 8,
     },
-    input: {
-      backgroundColor: theme.surface,
-      borderRadius: 8,
-      padding: 12,
-      fontSize: 16,
-      color: theme.text,
-      borderWidth: 1,
-      borderColor: theme.border,
+    loadingOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      alignItems: 'center',
+      backgroundColor: 'rgba(0,0,0,0.3)',
+      justifyContent: 'center',
+      zIndex: 1000,
     },
-    businessTypesContainer: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      marginTop: 8,
+    subtitle: {
+      color: theme.textSecondary,
+      fontSize: 16,
+      marginTop: 4,
+    },
+    title: {
+      color: theme.text,
+      fontSize: 24,
+      fontWeight: 'bold',
     },
     typeChip: {
+      borderRadius: 16,
+      marginBottom: 8,
+      marginRight: 8,
       paddingHorizontal: 12,
       paddingVertical: 8,
-      borderRadius: 16,
-      marginRight: 8,
-      marginBottom: 8,
     },
     typeChipSelected: {
       backgroundColor: theme.primary,
     },
     typeChipUnselected: {
       backgroundColor: theme.surface,
-      borderWidth: 1,
       borderColor: theme.border,
+      borderWidth: 1,
     },
     typeText: {
       fontSize: 14,
@@ -158,23 +165,16 @@ const EditProfileScreen = ({ navigation, route }) => {
       color: theme.text,
     },
     updateButton: {
+      alignItems: 'center',
       backgroundColor: theme.primary,
       borderRadius: 12,
-      padding: 16,
-      alignItems: 'center',
       marginTop: 24,
+      padding: 16,
     },
     updateButtonText: {
       color: '#FFFFFF',
-      fontWeight: '600',
       fontSize: 18,
-    },
-    loadingOverlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: 'rgba(0,0,0,0.3)',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 1000,
+      fontWeight: '600',
     },
   });
 

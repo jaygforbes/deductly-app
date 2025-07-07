@@ -139,65 +139,25 @@ const AddDeductionScreen = ({ navigation }) => {
   };
 
   const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.background,
-    },
-    content: {
-      flex: 1,
-      padding: 16,
-    },
-    inputGroup: {
-      marginBottom: 16,
-    },
-    label: {
-      fontSize: 16,
-      fontWeight: '500',
-      color: theme.text,
-      marginBottom: 8,
-    },
-    input: {
-      backgroundColor: theme.surface,
-      borderRadius: 8,
-      padding: 12,
-      fontSize: 16,
-      color: theme.text,
-      borderWidth: 1,
-      borderColor: theme.border,
-    },
-    datePickerButton: {
-      backgroundColor: theme.surface,
-      borderRadius: 8,
-      padding: 12,
-      borderWidth: 1,
-      borderColor: theme.border,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    dateText: {
-      fontSize: 16,
-      color: theme.text,
-    },
     categoriesContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
       marginTop: 8,
     },
     categoryChip: {
+      borderRadius: 16,
+      marginBottom: 8,
+      marginRight: 8,
       paddingHorizontal: 12,
       paddingVertical: 8,
-      borderRadius: 16,
-      marginRight: 8,
-      marginBottom: 8,
     },
     categoryChipSelected: {
       backgroundColor: theme.primary,
     },
     categoryChipUnselected: {
       backgroundColor: theme.surface,
-      borderWidth: 1,
       borderColor: theme.border,
+      borderWidth: 1,
     },
     categoryText: {
       fontSize: 14,
@@ -208,61 +168,101 @@ const AddDeductionScreen = ({ navigation }) => {
     categoryTextUnselected: {
       color: theme.text,
     },
-    receiptSection: {
-      marginTop: 16,
-      marginBottom: 16,
+    container: {
+      backgroundColor: theme.background,
+      flex: 1,
     },
-    receiptButtons: {
+    content: {
+      flex: 1,
+      padding: 16,
+    },
+    datePickerButton: {
+      alignItems: 'center',
+      backgroundColor: theme.surface,
+      borderColor: theme.border,
+      borderRadius: 8,
+      borderWidth: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
+      padding: 12,
+    },
+    dateText: {
+      color: theme.text,
+      fontSize: 16,
+    },
+    input: {
+      backgroundColor: theme.surface,
+      borderColor: theme.border,
+      borderRadius: 8,
+      borderWidth: 1,
+      color: theme.text,
+      fontSize: 16,
+      padding: 12,
+    },
+    inputGroup: {
+      marginBottom: 16,
+    },
+    label: {
+      color: theme.text,
+      fontSize: 16,
+      fontWeight: '500',
+      marginBottom: 8,
+    },
+    loadingOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      alignItems: 'center',
+      backgroundColor: 'rgba(0,0,0,0.3)',
+      justifyContent: 'center',
+      zIndex: 1000,
     },
     receiptButton: {
-      flex: 1,
-      backgroundColor: theme.surface,
-      borderRadius: 8,
-      padding: 12,
       alignItems: 'center',
-      marginHorizontal: 4,
-      borderWidth: 1,
+      backgroundColor: theme.surface,
       borderColor: theme.border,
+      borderRadius: 8,
+      borderWidth: 1,
+      flex: 1,
+      marginHorizontal: 4,
+      padding: 12,
     },
     receiptButtonText: {
       color: theme.primary,
       fontWeight: '500',
     },
-    receiptPreview: {
-      width: '100%',
-      height: 200,
-      backgroundColor: theme.surface,
-      borderRadius: 8,
-      marginTop: 16,
-      justifyContent: 'center',
-      alignItems: 'center',
-      overflow: 'hidden',
+    receiptButtons: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
     receiptImage: {
-      width: '100%',
       height: '100%',
       resizeMode: 'cover',
+      width: '100%',
+    },
+    receiptPreview: {
+      alignItems: 'center',
+      backgroundColor: theme.surface,
+      borderRadius: 8,
+      height: 200,
+      justifyContent: 'center',
+      marginTop: 16,
+      overflow: 'hidden',
+      width: '100%',
+    },
+    receiptSection: {
+      marginBottom: 16,
+      marginTop: 16,
     },
     saveButton: {
+      alignItems: 'center',
       backgroundColor: theme.primary,
       borderRadius: 12,
-      padding: 16,
-      alignItems: 'center',
       marginTop: 24,
+      padding: 16,
     },
     saveButtonText: {
       color: '#FFFFFF',
-      fontWeight: '600',
       fontSize: 18,
-    },
-    loadingOverlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: 'rgba(0,0,0,0.3)',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 1000,
+      fontWeight: '600',
     },
   });
 

@@ -48,65 +48,9 @@ const ForgotPasswordScreen = ({ navigation }) => {
   };
 
   const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.background,
-    },
-    content: {
-      flex: 1,
-      padding: 24,
-      justifyContent: 'center',
-    },
-    header: {
-      marginBottom: 32,
-      alignItems: 'center',
-    },
-    title: {
-      fontSize: 28,
-      fontWeight: 'bold',
-      color: theme.text,
-      marginBottom: 12,
-      textAlign: 'center',
-    },
-    subtitle: {
-      fontSize: 16,
-      color: theme.textSecondary,
-      textAlign: 'center',
-      marginBottom: 24,
-    },
-    inputGroup: {
-      marginBottom: 24,
-    },
-    label: {
-      fontSize: 16,
-      fontWeight: '500',
-      color: theme.text,
-      marginBottom: 8,
-    },
-    input: {
-      backgroundColor: theme.surface,
-      borderRadius: 8,
-      padding: 16,
-      fontSize: 16,
-      color: theme.text,
-      borderWidth: 1,
-      borderColor: theme.border,
-    },
-    resetButton: {
-      backgroundColor: theme.primary,
-      borderRadius: 12,
-      padding: 16,
-      alignItems: 'center',
-      marginTop: 8,
-    },
-    resetButtonText: {
-      color: '#FFFFFF',
-      fontWeight: '600',
-      fontSize: 18,
-    },
     backButton: {
-      flexDirection: 'row',
       alignItems: 'center',
+      flexDirection: 'row',
       justifyContent: 'center',
       marginTop: 24,
     },
@@ -116,12 +60,68 @@ const ForgotPasswordScreen = ({ navigation }) => {
       fontWeight: '500',
       marginLeft: 4,
     },
+    container: {
+      backgroundColor: theme.background,
+      flex: 1,
+    },
+    content: {
+      flex: 1,
+      justifyContent: 'center',
+      padding: 24,
+    },
+    header: {
+      alignItems: 'center',
+      marginBottom: 32,
+    },
+    input: {
+      backgroundColor: theme.surface,
+      borderColor: theme.border,
+      borderRadius: 8,
+      borderWidth: 1,
+      color: theme.text,
+      fontSize: 16,
+      padding: 16,
+    },
+    inputGroup: {
+      marginBottom: 24,
+    },
+    label: {
+      color: theme.text,
+      fontSize: 16,
+      fontWeight: '500',
+      marginBottom: 8,
+    },
     loadingOverlay: {
       ...StyleSheet.absoluteFillObject,
+      alignItems: 'center',
       backgroundColor: 'rgba(0,0,0,0.3)',
       justifyContent: 'center',
-      alignItems: 'center',
       zIndex: 1000,
+    },
+    resetButton: {
+      alignItems: 'center',
+      backgroundColor: theme.primary,
+      borderRadius: 12,
+      marginTop: 8,
+      padding: 16,
+    },
+    resetButtonText: {
+      color: '#FFFFFF',
+      fontSize: 18,
+      fontWeight: '600',
+    },
+    subtitle: {
+      color: theme.textSecondary,
+      fontSize: 16,
+      marginBottom: 24,
+      textAlign: 'center',
+    },
+    title: {
+      color: theme.text,
+      fontSize: 28,
+      fontWeight: 'bold',
+      marginBottom: 12,
+      textAlign: 'center',
     },
   });
 

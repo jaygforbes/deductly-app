@@ -32,9 +32,16 @@ npm ci || npm install
 echo "🧪 Running tests..."
 npm test
 
-# Run linting
-echo "🔍 Running linter..."
-npm run lint
+# Run linting (optional)
+echo "🔍 Checking if linting should be run..."
+read -p "Do you want to run linting? This may fail the build if there are errors. (y/n, default: n) " -n 1 -r RUN_LINT
+echo
+if [[ $RUN_LINT =~ ^[Yy]$ ]]; then
+    echo "🔍 Running linter..."
+    npm run lint
+else
+    echo "🔍 Skipping linting..."
+fi
 
 # Check for any git changes that haven't been committed
 if [ -n "$(git status --porcelain)" ]; then

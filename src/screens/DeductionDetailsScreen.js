@@ -336,175 +336,49 @@ const DeductionDetailsScreen = ({ navigation, route }) => {
   };
 
   const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.background,
-    },
-    content: {
-      flex: 1,
-      padding: 16,
-    },
-    header: {
-      marginBottom: 24,
-    },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: theme.text,
-    },
-    detailsContainer: {
-      backgroundColor: theme.card,
-      borderRadius: 12,
-      padding: 16,
-      marginBottom: 16,
-      shadowColor: theme.cardShadow,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 2,
-    },
-    detailRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 16,
-    },
-    detailLabel: {
-      fontSize: 16,
-      color: theme.textSecondary,
-    },
-    detailValue: {
-      fontSize: 16,
-      color: theme.text,
-      fontWeight: '500',
-    },
-    detailAmount: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: theme.text,
-    },
-    notesContainer: {
-      marginBottom: 16,
-    },
-    notesText: {
-      fontSize: 16,
-      color: theme.text,
-      marginTop: 8,
-    },
-    receiptContainer: {
-      marginBottom: 16,
-    },
-    receiptImage: {
-      width: '100%',
-      height: 200,
-      borderRadius: 8,
-      marginTop: 8,
-      backgroundColor: theme.surface,
-    },
     addReceiptButton: {
-      flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
       backgroundColor: theme.surface,
-      borderRadius: 8,
-      padding: 12,
-      marginBottom: 16,
-      borderWidth: 1,
       borderColor: theme.border,
+      borderRadius: 8,
       borderStyle: 'dashed',
+      borderWidth: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginBottom: 16,
+      padding: 12,
     },
     addReceiptText: {
       color: theme.primary,
       fontWeight: '500',
       marginLeft: 8,
     },
+    button: {
+      alignItems: 'center',
+      borderRadius: 8,
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginHorizontal: 4,
+      padding: 12,
+    },
     buttonRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-    },
-    button: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 8,
-      padding: 12,
-      marginHorizontal: 4,
-    },
-    editButton: {
-      backgroundColor: theme.primary,
-    },
-    deleteButton: {
-      backgroundColor: theme.error,
-    },
-    cancelButton: {
-      backgroundColor: theme.surface,
-      borderWidth: 1,
-      borderColor: theme.border,
-    },
-    saveButton: {
-      backgroundColor: theme.primary,
     },
     buttonText: {
       color: '#FFFFFF',
       fontWeight: '600',
       marginLeft: 6,
     },
+    cancelButton: {
+      backgroundColor: theme.surface,
+      borderColor: theme.border,
+      borderWidth: 1,
+    },
     cancelButtonText: {
       color: theme.text,
       fontWeight: '600',
-    },
-    saveButtonText: {
-      color: '#FFFFFF',
-      fontWeight: '600',
-    },
-    loadingContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    editForm: {
-      backgroundColor: theme.card,
-      borderRadius: 12,
-      padding: 16,
-      marginBottom: 16,
-      shadowColor: theme.cardShadow,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 2,
-    },
-    formGroup: {
-      marginBottom: 16,
-    },
-    label: {
-      fontSize: 16,
-      fontWeight: '500',
-      color: theme.text,
-      marginBottom: 8,
-    },
-    input: {
-      backgroundColor: theme.surface,
-      borderRadius: 8,
-      padding: 12,
-      fontSize: 16,
-      color: theme.text,
-      borderWidth: 1,
-      borderColor: theme.border,
-    },
-    datePickerButton: {
-      backgroundColor: theme.surface,
-      borderRadius: 8,
-      padding: 12,
-      borderWidth: 1,
-      borderColor: theme.border,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    dateText: {
-      fontSize: 16,
-      color: theme.text,
     },
     categoriesContainer: {
       flexDirection: 'row',
@@ -512,19 +386,19 @@ const DeductionDetailsScreen = ({ navigation, route }) => {
       marginTop: 8,
     },
     categoryChip: {
+      borderRadius: 16,
+      marginBottom: 8,
+      marginRight: 8,
       paddingHorizontal: 12,
       paddingVertical: 8,
-      borderRadius: 16,
-      marginRight: 8,
-      marginBottom: 8,
     },
     categoryChipSelected: {
       backgroundColor: theme.primary,
     },
     categoryChipUnselected: {
       backgroundColor: theme.surface,
-      borderWidth: 1,
       borderColor: theme.border,
+      borderWidth: 1,
     },
     categoryText: {
       fontSize: 14,
@@ -534,6 +408,132 @@ const DeductionDetailsScreen = ({ navigation, route }) => {
     },
     categoryTextUnselected: {
       color: theme.text,
+    },
+    container: {
+      backgroundColor: theme.background,
+      flex: 1,
+    },
+    content: {
+      flex: 1,
+      padding: 16,
+    },
+    datePickerButton: {
+      alignItems: 'center',
+      backgroundColor: theme.surface,
+      borderColor: theme.border,
+      borderRadius: 8,
+      borderWidth: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      padding: 12,
+    },
+    dateText: {
+      color: theme.text,
+      fontSize: 16,
+    },
+    deleteButton: {
+      backgroundColor: theme.error,
+    },
+    detailAmount: {
+      color: theme.text,
+      fontSize: 24,
+      fontWeight: 'bold',
+    },
+    detailLabel: {
+      color: theme.textSecondary,
+      fontSize: 16,
+    },
+    detailRow: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 16,
+    },
+    detailValue: {
+      color: theme.text,
+      fontSize: 16,
+      fontWeight: '500',
+    },
+    detailsContainer: {
+      backgroundColor: theme.card,
+      borderRadius: 12,
+      elevation: 2,
+      marginBottom: 16,
+      padding: 16,
+      shadowColor: theme.cardShadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+    },
+    editButton: {
+      backgroundColor: theme.primary,
+    },
+    editForm: {
+      backgroundColor: theme.card,
+      borderRadius: 12,
+      elevation: 2,
+      marginBottom: 16,
+      padding: 16,
+      shadowColor: theme.cardShadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+    },
+    formGroup: {
+      marginBottom: 16,
+    },
+    header: {
+      marginBottom: 24,
+    },
+    input: {
+      backgroundColor: theme.surface,
+      borderColor: theme.border,
+      borderRadius: 8,
+      borderWidth: 1,
+      color: theme.text,
+      fontSize: 16,
+      padding: 12,
+    },
+    label: {
+      color: theme.text,
+      fontSize: 16,
+      fontWeight: '500',
+      marginBottom: 8,
+    },
+    loadingContainer: {
+      alignItems: 'center',
+      flex: 1,
+      justifyContent: 'center',
+    },
+    notesContainer: {
+      marginBottom: 16,
+    },
+    notesText: {
+      color: theme.text,
+      fontSize: 16,
+      marginTop: 8,
+    },
+    receiptContainer: {
+      marginBottom: 16,
+    },
+    receiptImage: {
+      backgroundColor: theme.surface,
+      borderRadius: 8,
+      height: 200,
+      marginTop: 8,
+      width: '100%',
+    },
+    saveButton: {
+      backgroundColor: theme.primary,
+    },
+    saveButtonText: {
+      color: '#FFFFFF',
+      fontWeight: '600',
+    },
+    title: {
+      color: theme.text,
+      fontSize: 24,
+      fontWeight: 'bold',
     },
   });
 

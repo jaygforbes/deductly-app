@@ -14,7 +14,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useProfile } from '../contexts/ProfileContext';
 import DeductionModule from '../modules/DeductionModule';
-import MileageModule from '../modules/MileageModule';
+// Removed unused import: // import MileageModule from '../modules/MileageModule'; // Removed unused import
 
 const HomeScreen = ({ navigation }) => {
   const { user } = useAuth();
@@ -86,111 +86,66 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.background,
-    },
-    content: {
-      flex: 1,
-      padding: 16,
-    },
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+    actionButton: {
       alignItems: 'center',
-      marginBottom: 16,
-    },
-    profileName: {
-      fontSize: 18,
-      fontWeight: '600',
-      color: theme.text,
-    },
-    summaryContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginBottom: 24,
-    },
-    summaryCard: {
-      flex: 1,
-      backgroundColor: theme.card,
+      backgroundColor: theme.primary,
       borderRadius: 12,
-      padding: 16,
-      marginHorizontal: 4,
-      shadowColor: theme.cardShadow,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 2,
-    },
-    summaryLabel: {
-      fontSize: 14,
-      color: theme.textSecondary,
-      marginBottom: 8,
-    },
-    summaryValue: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      color: theme.text,
-    },
-    sectionTitle: {
-      fontSize: 18,
-      fontWeight: '600',
-      color: theme.text,
       marginBottom: 12,
-      marginTop: 16,
+      padding: 16,
+    },
+    actionButtonText: {
+      color: '#FFFFFF',
+      fontSize: 16,
+      fontWeight: '600',
     },
     card: {
       backgroundColor: theme.card,
       borderRadius: 12,
-      padding: 16,
+      elevation: 2,
       marginBottom: 12,
+      padding: 16,
       shadowColor: theme.cardShadow,
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 4,
-      elevation: 2,
-    },
-    cardRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    },
-    cardTitle: {
-      fontSize: 16,
-      fontWeight: '500',
-      color: theme.text,
     },
     cardAmount: {
+      color: theme.primary,
       fontSize: 16,
       fontWeight: '600',
-      color: theme.primary,
-    },
-    cardSubtitle: {
-      fontSize: 14,
-      color: theme.textSecondary,
-      marginTop: 4,
     },
     cardCategory: {
-      fontSize: 12,
-      color: theme.textSecondary,
-      marginTop: 8,
-      backgroundColor: theme.surface,
       alignSelf: 'flex-start',
+      backgroundColor: theme.surface,
+      borderRadius: 4,
+      color: theme.textSecondary,
+      fontSize: 12,
+      marginTop: 8,
       paddingHorizontal: 8,
       paddingVertical: 4,
-      borderRadius: 4,
     },
-    actionButton: {
-      backgroundColor: theme.primary,
-      borderRadius: 12,
-      padding: 16,
+    cardRow: {
       alignItems: 'center',
-      marginBottom: 12,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
-    actionButtonText: {
-      color: '#FFFFFF',
-      fontWeight: '600',
+    cardSubtitle: {
+      color: theme.textSecondary,
+      fontSize: 14,
+      marginTop: 4,
+    },
+    cardTitle: {
+      color: theme.text,
       fontSize: 16,
+      fontWeight: '500',
+    },
+    container: {
+      backgroundColor: theme.background,
+      flex: 1,
+    },
+    content: {
+      flex: 1,
+      padding: 16,
     },
     emptyState: {
       alignItems: 'center',
@@ -200,13 +155,58 @@ const HomeScreen = ({ navigation }) => {
     emptyStateText: {
       color: theme.textSecondary,
       fontSize: 16,
-      textAlign: 'center',
       marginTop: 12,
+      textAlign: 'center',
+    },
+    header: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 16,
     },
     loadingContainer: {
+      alignItems: 'center',
       flex: 1,
       justifyContent: 'center',
-      alignItems: 'center',
+    },
+    profileName: {
+      color: theme.text,
+      fontSize: 18,
+      fontWeight: '600',
+    },
+    sectionTitle: {
+      color: theme.text,
+      fontSize: 18,
+      fontWeight: '600',
+      marginBottom: 12,
+      marginTop: 16,
+    },
+    summaryCard: {
+      backgroundColor: theme.card,
+      borderRadius: 12,
+      elevation: 2,
+      flex: 1,
+      marginHorizontal: 4,
+      padding: 16,
+      shadowColor: theme.cardShadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+    },
+    summaryContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 24,
+    },
+    summaryLabel: {
+      color: theme.textSecondary,
+      fontSize: 14,
+      marginBottom: 8,
+    },
+    summaryValue: {
+      color: theme.text,
+      fontSize: 20,
+      fontWeight: 'bold',
     },
   });
 

@@ -37,58 +37,58 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.background,
-      padding: 20,
-    },
-    innerContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-    },
-    logo: {
-      fontSize: 40,
-      fontWeight: 'bold',
-      marginBottom: 40,
-      color: theme.primary,
-    },
-    inputContainer: {
-      width: '100%',
-      marginBottom: 20,
-    },
-    input: {
-      backgroundColor: theme.surface,
-      padding: 15,
-      borderRadius: 10,
-      marginBottom: 15,
-      borderWidth: 1,
-      borderColor: theme.border,
-      color: theme.text,
-    },
     button: {
-      backgroundColor: theme.primary,
-      padding: 15,
-      borderRadius: 10,
-      width: '100%',
       alignItems: 'center',
+      backgroundColor: theme.primary,
+      borderRadius: 10,
       marginBottom: 15,
+      padding: 15,
+      width: '100%',
     },
     buttonText: {
       color: '#FFFFFF',
+      fontSize: 16,
       fontWeight: 'bold',
+    },
+    container: {
+      backgroundColor: theme.background,
+      flex: 1,
+      padding: 20,
+    },
+    innerContainer: {
+      alignItems: 'center',
+      flex: 1,
+      justifyContent: 'center',
+      width: '100%',
+    },
+    input: {
+      backgroundColor: theme.surface,
+      borderColor: theme.border,
+      borderRadius: 10,
+      borderWidth: 1,
+      color: theme.text,
+      marginBottom: 15,
+      padding: 15,
+    },
+    inputContainer: {
+      marginBottom: 20,
+      width: '100%',
+    },
+    link: {
+      color: theme.primary,
       fontSize: 16,
     },
     linkContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      width: '100%',
       marginTop: 20,
+      width: '100%',
     },
-    link: {
+    logo: {
       color: theme.primary,
-      fontSize: 16,
+      fontSize: 40,
+      fontWeight: 'bold',
+      marginBottom: 40,
     },
   });
 

@@ -43,89 +43,89 @@ const SettingsScreen = ({ navigation }) => {
   };
 
   const styles = StyleSheet.create({
+    button: {
+      alignItems: 'center',
+      backgroundColor: theme.primary,
+      borderRadius: 12,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginTop: 8,
+      padding: 16,
+    },
+    buttonText: {
+      color: '#FFFFFF',
+      fontSize: 16,
+      fontWeight: '600',
+      marginLeft: 8,
+    },
+    card: {
+      backgroundColor: theme.card,
+      borderRadius: 12,
+      elevation: 2,
+      marginBottom: 16,
+      padding: 16,
+      shadowColor: theme.cardShadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+    },
     container: {
-      flex: 1,
       backgroundColor: theme.background,
+      flex: 1,
     },
     content: {
       padding: 16,
     },
+    email: {
+      color: theme.textSecondary,
+      fontSize: 16,
+    },
     header: {
       marginBottom: 24,
     },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: theme.text,
-      marginBottom: 8,
+    loadingOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      alignItems: 'center',
+      backgroundColor: 'rgba(0,0,0,0.3)',
+      justifyContent: 'center',
+      zIndex: 1000,
     },
-    email: {
-      fontSize: 16,
-      color: theme.textSecondary,
+    logoutButton: {
+      backgroundColor: theme.error,
     },
     section: {
       marginBottom: 24,
     },
     sectionTitle: {
+      color: theme.text,
       fontSize: 18,
       fontWeight: '600',
-      color: theme.text,
       marginBottom: 16,
     },
-    card: {
-      backgroundColor: theme.card,
-      borderRadius: 12,
-      padding: 16,
-      marginBottom: 16,
-      shadowColor: theme.cardShadow,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 2,
+    settingLabel: {
+      color: theme.text,
+      fontSize: 16,
     },
     settingRow: {
+      alignItems: 'center',
+      borderBottomColor: theme.border,
+      borderBottomWidth: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center',
       paddingVertical: 12,
-      borderBottomWidth: 1,
-      borderBottomColor: theme.border,
     },
     settingRowLast: {
       borderBottomWidth: 0,
     },
-    settingLabel: {
-      fontSize: 16,
-      color: theme.text,
-    },
     settingValue: {
-      fontSize: 16,
       color: theme.textSecondary,
-    },
-    button: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: theme.primary,
-      borderRadius: 12,
-      padding: 16,
-      marginTop: 8,
-    },
-    buttonText: {
-      color: '#FFFFFF',
-      fontWeight: '600',
       fontSize: 16,
-      marginLeft: 8,
     },
-    logoutButton: {
-      backgroundColor: theme.error,
-    },
-    loadingOverlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: 'rgba(0,0,0,0.3)',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 1000,
+    title: {
+      color: theme.text,
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 8,
     },
   });
 

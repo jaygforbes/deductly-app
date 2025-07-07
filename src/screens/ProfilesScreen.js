@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   View, 
   Text, 
@@ -10,12 +10,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useProfile } from '../contexts/ProfileContext';
 
 const ProfilesScreen = ({ navigation }) => {
-  const { user } = useAuth();
   const { theme } = useTheme();
   const { profiles, activeProfile, setActiveProfile, deleteProfile } = useProfile();
   const [isLoading, setIsLoading] = useState(false);
@@ -98,118 +96,118 @@ const ProfilesScreen = ({ navigation }) => {
   };
 
   const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.background,
-    },
-    content: {
-      padding: 16,
-      flex: 1,
-    },
-    header: {
-      marginBottom: 16,
-    },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: theme.text,
-    },
-    subtitle: {
-      fontSize: 16,
-      color: theme.textSecondary,
-      marginTop: 4,
-    },
-    profileCard: {
-      backgroundColor: theme.card,
-      borderRadius: 12,
-      padding: 16,
-      marginBottom: 12,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+    actionButton: {
       alignItems: 'center',
-      shadowColor: theme.cardShadow,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 2,
+      backgroundColor: theme.surface,
+      borderRadius: 18,
+      height: 36,
+      justifyContent: 'center',
+      marginLeft: 8,
+      width: 36,
+    },
+    activeIndicator: {
+      backgroundColor: 'rgba(255,255,255,0.2)',
+      borderRadius: 12,
+      marginRight: 8,
+      paddingHorizontal: 10,
+      paddingVertical: 4,
     },
     activeProfileCard: {
       backgroundColor: theme.primary,
     },
-    profileInfo: {
-      flex: 1,
-    },
-    profileName: {
-      fontSize: 18,
-      fontWeight: '600',
-      color: theme.text,
-      marginBottom: 4,
-    },
-    profileDetails: {
-      fontSize: 14,
-      color: theme.textSecondary,
-    },
     activeProfileText: {
       color: '#FFFFFF',
-    },
-    profileActions: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    actionButton: {
-      width: 36,
-      height: 36,
-      borderRadius: 18,
-      backgroundColor: theme.surface,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginLeft: 8,
-    },
-    activeIndicator: {
-      backgroundColor: 'rgba(255,255,255,0.2)',
-      paddingHorizontal: 10,
-      paddingVertical: 4,
-      borderRadius: 12,
-      marginRight: 8,
     },
     activeText: {
       color: '#FFFFFF',
       fontSize: 12,
       fontWeight: '600',
     },
-    emptyContainer: {
+    container: {
+      backgroundColor: theme.background,
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 24,
     },
-    emptyText: {
-      fontSize: 16,
-      color: theme.textSecondary,
-      textAlign: 'center',
-      marginTop: 16,
+    content: {
+      flex: 1,
+      padding: 16,
     },
     createButton: {
-      flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
       backgroundColor: theme.primary,
       borderRadius: 12,
-      padding: 16,
+      flexDirection: 'row',
+      justifyContent: 'center',
       marginTop: 24,
+      padding: 16,
     },
     createButtonText: {
       color: '#FFFFFF',
-      fontWeight: '600',
       fontSize: 16,
+      fontWeight: '600',
       marginLeft: 8,
+    },
+    emptyContainer: {
+      alignItems: 'center',
+      flex: 1,
+      justifyContent: 'center',
+      padding: 24,
+    },
+    emptyText: {
+      color: theme.textSecondary,
+      fontSize: 16,
+      marginTop: 16,
+      textAlign: 'center',
+    },
+    header: {
+      marginBottom: 16,
     },
     loadingOverlay: {
       ...StyleSheet.absoluteFillObject,
+      alignItems: 'center',
       backgroundColor: 'rgba(0,0,0,0.3)',
       justifyContent: 'center',
-      alignItems: 'center',
       zIndex: 1000,
+    },
+    profileActions: {
+      alignItems: 'center',
+      flexDirection: 'row',
+    },
+    profileCard: {
+      alignItems: 'center',
+      backgroundColor: theme.card,
+      borderRadius: 12,
+      elevation: 2,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 12,
+      padding: 16,
+      shadowColor: theme.cardShadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+    },
+    profileDetails: {
+      color: theme.textSecondary,
+      fontSize: 14,
+    },
+    profileInfo: {
+      flex: 1,
+    },
+    profileName: {
+      color: theme.text,
+      fontSize: 18,
+      fontWeight: '600',
+      marginBottom: 4,
+    },
+    subtitle: {
+      color: theme.textSecondary,
+      fontSize: 16,
+      marginTop: 4,
+    },
+    title: {
+      color: theme.text,
+      fontSize: 24,
+      fontWeight: 'bold',
     },
   });
 
@@ -234,7 +232,7 @@ const ProfilesScreen = ({ navigation }) => {
           <View style={styles.emptyContainer}>
             <Ionicons name="briefcase-outline" size={64} color={theme.textSecondary} />
             <Text style={styles.emptyText}>
-              You don't have any job profiles yet. Create one to start tracking your deductions.
+              You don&apos;t have any job profiles yet. Create one to start tracking your deductions.
             </Text>
           </View>
         )}

@@ -9,7 +9,7 @@ import {
   ScrollView
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
+// Ionicons import removed as it was unused
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
@@ -19,14 +19,14 @@ import MileageModule from '../modules/MileageModule';
 const MileageTripScreen = ({ navigation }) => {
   const { user } = useAuth();
   const { theme } = useTheme();
-  const { activeProfile, profiles } = useProfile();
+  const { activeProfile } = useProfile(); // Removed unused profiles variable
   const [isTracking, setIsTracking] = useState(false);
   const [tripStatus, setTripStatus] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [tripPurpose, setTripPurpose] = useState('Business Travel');
-  const [currentLocation, setCurrentLocation] = useState(null);
-  const [tripPath, setTripPath] = useState([]);
+  const [tripPurpose] = useState('Business Travel'); // Removed unused setter
+  const [currentLocation] = useState(null); // Removed unused setter
+  const [tripPath] = useState([]); // Removed unused setter
   const [timer, setTimer] = useState(null);
 
   useEffect(() => {
@@ -141,81 +141,81 @@ const MileageTripScreen = ({ navigation }) => {
   };
 
   const styles = StyleSheet.create({
+    button: {
+      alignItems: 'center',
+      backgroundColor: isTracking ? theme.error : theme.primary,
+      borderRadius: 12,
+      marginTop: 16,
+      padding: 16,
+    },
+    buttonText: {
+      color: '#FFFFFF',
+      fontSize: 18,
+      fontWeight: '600',
+    },
+    card: {
+      backgroundColor: theme.card,
+      borderRadius: 12,
+      elevation: 2,
+      marginBottom: 16,
+      padding: 16,
+      shadowColor: theme.cardShadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+    },
     container: {
-      flex: 1,
       backgroundColor: theme.background,
+      flex: 1,
     },
     content: {
       flex: 1,
       padding: 16,
     },
-    mapContainer: {
-      height: 200,
-      borderRadius: 12,
-      overflow: 'hidden',
-      marginBottom: 16,
+    loadingOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      alignItems: 'center',
+      backgroundColor: 'rgba(0,0,0,0.3)',
+      justifyContent: 'center',
+      zIndex: 1000,
     },
     map: {
       ...StyleSheet.absoluteFillObject,
     },
-    card: {
-      backgroundColor: theme.card,
+    mapContainer: {
       borderRadius: 12,
-      padding: 16,
+      height: 200,
       marginBottom: 16,
-      shadowColor: theme.cardShadow,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 2,
+      overflow: 'hidden',
     },
-    statsContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+    profileText: {
+      color: theme.textSecondary,
+      fontSize: 16,
+      marginBottom: 16,
+    },
+    purposeText: {
+      color: theme.text,
+      fontSize: 18,
+      fontWeight: '600',
+      marginBottom: 8,
     },
     statItem: {
       alignItems: 'center',
       flex: 1,
     },
-    statValue: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: theme.text,
-    },
     statLabel: {
-      fontSize: 14,
       color: theme.textSecondary,
+      fontSize: 14,
       marginTop: 4,
     },
-    purposeText: {
-      fontSize: 18,
-      fontWeight: '600',
+    statValue: {
       color: theme.text,
-      marginBottom: 8,
+      fontSize: 24,
+      fontWeight: 'bold',
     },
-    profileText: {
-      fontSize: 16,
-      color: theme.textSecondary,
-      marginBottom: 16,
-    },
-    button: {
-      backgroundColor: isTracking ? theme.error : theme.primary,
-      borderRadius: 12,
-      padding: 16,
-      alignItems: 'center',
-      marginTop: 16,
-    },
-    buttonText: {
-      color: '#FFFFFF',
-      fontWeight: '600',
-      fontSize: 18,
-    },
-    loadingOverlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: 'rgba(0,0,0,0.3)',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 1000,
+    statsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
   });
 

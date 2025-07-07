@@ -168,43 +168,46 @@ const MileageScreen = ({ navigation }) => {
 
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
       backgroundColor: theme.background,
+      flex: 1,
     },
     content: {
       flex: 1,
       padding: 16,
     },
-    header: {
-      marginBottom: 16,
+    emptyContainer: {
+      alignItems: 'center',
+      flex: 1,
+      justifyContent: 'center',
+      padding: 24,
     },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: theme.text,
-    },
-    subtitle: {
-      fontSize: 16,
+    emptyText: {
       color: theme.textSecondary,
-      marginTop: 4,
+      fontSize: 16,
+      marginBottom: 24,
+      marginTop: 16,
+      textAlign: 'center',
     },
-    filterContainer: {
-      flexDirection: 'row',
-      marginBottom: 16,
+    endDot: {
+      backgroundColor: '#F44336',
     },
     filterChip: {
-      paddingHorizontal: 12,
-      paddingVertical: 8,
       borderRadius: 16,
       marginRight: 8,
+      paddingHorizontal: 12,
+      paddingVertical: 8,
     },
     filterChipSelected: {
       backgroundColor: theme.primary,
     },
     filterChipUnselected: {
       backgroundColor: theme.surface,
-      borderWidth: 1,
       borderColor: theme.border,
+      borderWidth: 1,
+    },
+    filterContainer: {
+      flexDirection: 'row',
+      marginBottom: 16,
     },
     filterText: {
       fontSize: 14,
@@ -215,140 +218,137 @@ const MileageScreen = ({ navigation }) => {
     filterTextUnselected: {
       color: theme.text,
     },
+    header: {
+      marginBottom: 16,
+    },
+    loadingContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 20,
+    },
+    locationContainer: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginVertical: 4,
+    },
+    locationDot: {
+      backgroundColor: '#4CAF50',
+      borderRadius: 6,
+      height: 12,
+      marginRight: 8,
+      width: 12,
+    },
+    locationLine: {
+      backgroundColor: theme.border,
+      height: 16,
+      marginLeft: 5,
+      width: 2,
+    },
+    locationText: {
+      color: theme.text,
+      flex: 1,
+      fontSize: 14,
+    },
+    startButton: {
+      alignItems: 'center',
+      backgroundColor: theme.primary,
+      borderRadius: 12,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginTop: 8,
+      padding: 16,
+    },
+    startButtonText: {
+      color: '#FFFFFF',
+      fontSize: 16,
+      fontWeight: '600',
+      marginLeft: 8,
+    },
     statsCard: {
       backgroundColor: theme.card,
       borderRadius: 12,
-      padding: 16,
+      elevation: 2,
       marginBottom: 16,
+      padding: 16,
       shadowColor: theme.cardShadow,
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 4,
-      elevation: 2,
+    },
+    statsLabel: {
+      color: theme.textSecondary,
+      fontSize: 14,
     },
     statsRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       marginBottom: 8,
     },
-    statsLabel: {
-      fontSize: 14,
-      color: theme.textSecondary,
-    },
     statsValue: {
+      color: theme.text,
       fontSize: 14,
       fontWeight: '600',
+    },
+    subtitle: {
+      color: theme.textSecondary,
+      fontSize: 16,
+      marginTop: 4,
+    },
+    title: {
       color: theme.text,
+      fontSize: 24,
+      fontWeight: 'bold',
     },
     totalMiles: {
+      color: theme.text,
       fontSize: 28,
       fontWeight: 'bold',
-      color: theme.text,
       marginBottom: 8,
     },
     tripCard: {
       backgroundColor: theme.card,
       borderRadius: 12,
-      padding: 16,
+      elevation: 2,
       marginBottom: 12,
+      padding: 16,
       shadowColor: theme.cardShadow,
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 4,
-      elevation: 2,
-    },
-    tripHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 12,
     },
     tripDate: {
-      fontSize: 14,
       color: theme.textSecondary,
-    },
-    tripDistance: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      color: theme.primary,
+      fontSize: 14,
     },
     tripDetails: {
       marginBottom: 12,
     },
-    locationContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginVertical: 4,
-    },
-    locationDot: {
-      width: 12,
-      height: 12,
-      borderRadius: 6,
-      backgroundColor: '#4CAF50',
-      marginRight: 8,
-    },
-    endDot: {
-      backgroundColor: '#F44336',
-    },
-    locationText: {
-      fontSize: 14,
-      color: theme.text,
-      flex: 1,
-    },
-    locationLine: {
-      width: 2,
-      height: 16,
-      backgroundColor: theme.border,
-      marginLeft: 5,
-    },
-    tripFooter: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingTop: 8,
-      borderTopWidth: 1,
-      borderTopColor: theme.border,
-    },
-    tripProfile: {
-      fontSize: 14,
-      color: theme.textSecondary,
+    tripDistance: {
+      color: theme.primary,
+      fontSize: 16,
+      fontWeight: 'bold',
     },
     tripDuration: {
+      color: theme.textSecondary,
       fontSize: 14,
-      color: theme.textSecondary,
     },
-    startButton: {
-      backgroundColor: theme.primary,
-      borderRadius: 12,
-      padding: 16,
+    tripFooter: {
       alignItems: 'center',
-      marginTop: 8,
+      borderTopColor: theme.border,
+      borderTopWidth: 1,
       flexDirection: 'row',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
+      paddingTop: 8,
     },
-    startButtonText: {
-      color: '#FFFFFF',
-      fontWeight: '600',
-      fontSize: 16,
-      marginLeft: 8,
-    },
-    emptyContainer: {
-      flex: 1,
-      justifyContent: 'center',
+    tripHeader: {
       alignItems: 'center',
-      padding: 24,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 12,
     },
-    emptyText: {
-      fontSize: 16,
+    tripProfile: {
       color: theme.textSecondary,
-      textAlign: 'center',
-      marginTop: 16,
-      marginBottom: 24,
-    },
-    loadingContainer: {
-      padding: 20,
-      alignItems: 'center',
-      justifyContent: 'center',
+      fontSize: 14,
     },
   });
 

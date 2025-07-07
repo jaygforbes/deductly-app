@@ -19,7 +19,7 @@ import ReportModule from '../modules/ReportModule';
 const ReportsScreen = () => {
   const { user } = useAuth();
   const { theme } = useTheme();
-  const { activeProfile, profiles } = useProfile();
+  const { activeProfile } = useProfile(); // Removed unused profiles variable
   
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTimePeriod, setSelectedTimePeriod] = useState('month');
@@ -71,72 +71,52 @@ const ReportsScreen = () => {
   };
 
   const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.background,
-    },
-    content: {
-      padding: 16,
-    },
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 16,
-    },
-    title: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      color: theme.text,
-    },
     card: {
       backgroundColor: theme.card,
       borderRadius: 12,
-      padding: 16,
+      elevation: 2,
       marginBottom: 16,
+      padding: 16,
       shadowColor: theme.cardShadow,
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 4,
-      elevation: 2,
     },
-    summaryText: {
-      fontSize: 16,
-      color: theme.text,
-      marginBottom: 8,
+    chartContainer: {
+      alignItems: 'center',
+      marginVertical: 16,
     },
-    summaryAmount: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: theme.text,
-      marginBottom: 16,
+    container: {
+      backgroundColor: theme.background,
+      flex: 1,
     },
-    sectionTitle: {
-      fontSize: 18,
-      fontWeight: '600',
-      color: theme.text,
-      marginBottom: 12,
+    content: {
+      padding: 16,
+    },
+    errorText: {
+      color: theme.error,
       marginTop: 16,
-    },
-    filterContainer: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      marginBottom: 16,
+      textAlign: 'center',
     },
     filterChip: {
+      borderRadius: 16,
+      marginBottom: 8,
+      marginRight: 8,
       paddingHorizontal: 12,
       paddingVertical: 8,
-      borderRadius: 16,
-      marginRight: 8,
-      marginBottom: 8,
     },
     filterChipSelected: {
       backgroundColor: theme.primary,
     },
     filterChipUnselected: {
       backgroundColor: theme.surface,
-      borderWidth: 1,
       borderColor: theme.border,
+      borderWidth: 1,
+    },
+    filterContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginBottom: 16,
     },
     filterText: {
       fontSize: 14,
@@ -147,30 +127,50 @@ const ReportsScreen = () => {
     filterTextUnselected: {
       color: theme.text,
     },
-    chartContainer: {
+    header: {
       alignItems: 'center',
-      marginVertical: 16,
-    },
-    noDataContainer: {
-      padding: 24,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    noDataText: {
-      fontSize: 16,
-      color: theme.textSecondary,
-      textAlign: 'center',
-      marginTop: 12,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 16,
     },
     loadingContainer: {
-      padding: 24,
       alignItems: 'center',
       justifyContent: 'center',
+      padding: 24,
     },
-    errorText: {
-      color: theme.error,
+    noDataContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 24,
+    },
+    noDataText: {
+      color: theme.textSecondary,
+      fontSize: 16,
+      marginTop: 12,
       textAlign: 'center',
+    },
+    sectionTitle: {
+      color: theme.text,
+      fontSize: 18,
+      fontWeight: '600',
+      marginBottom: 12,
       marginTop: 16,
+    },
+    summaryAmount: {
+      color: theme.text,
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 16,
+    },
+    summaryText: {
+      color: theme.text,
+      fontSize: 16,
+      marginBottom: 8,
+    },
+    title: {
+      color: theme.text,
+      fontSize: 20,
+      fontWeight: 'bold',
     },
   });
 
