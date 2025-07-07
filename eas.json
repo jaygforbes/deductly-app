@@ -21,9 +21,10 @@
       },
       "env": {
         "EXPO_BUNDLE_IOS": "true",
-        "EXPO_USE_PREBUILD_IOS": "true"
+        "EXPO_USE_PREBUILD_IOS": "true",
+        "EXPO_SKIP_BUNDLING": "1"
       },
-      "prebuildCommand": "node ./scripts/create-ios-bundle.js && echo 'Bundle preparation completed'"
+      "prebuildCommand": "echo 'Using pre-generated bundle' && mkdir -p $PROJECT_ROOT/ios && cp main.jsbundle $PROJECT_ROOT/ios/ && cp -R ios/assets $PROJECT_ROOT/ios/"
     },
     "app-store": {
       "extends": "production",
@@ -38,8 +39,10 @@
       "autoIncrement": true,
       "env": {
         "EXPO_BUNDLE_IOS": "true",
-        "EXPO_USE_PREBUILD_IOS": "true"
-      }
+        "EXPO_USE_PREBUILD_IOS": "true",
+        "EXPO_SKIP_BUNDLING": "1"
+      },
+      "prebuildCommand": "echo 'Using pre-generated bundle for App Store' && mkdir -p $PROJECT_ROOT/ios && cp main.jsbundle $PROJECT_ROOT/ios/ && cp -R ios/assets $PROJECT_ROOT/ios/"
     }
   },
   "submit": {
