@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 0.52.0"
+    "version": ">= 0.52.0",
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
@@ -11,13 +12,36 @@
       "distribution": "internal"
     },
     "production": {
+      "autoIncrement": true,
+      "ios": {
+        "resourceClass": "m1-medium",
+        "image": "latest",
+        "credentialsSource": "remote",
+        "buildConfiguration": "Release"
+      },
+      "env": {
+        "EXPO_BUNDLE_IOS": "true",
+        "EXPO_USE_PREBUILD_IOS": "true",
+        "EXPO_SKIP_BUNDLING": "1"
+      },
+      "prebuildCommand": "./scripts/prepare-ios-bundle.sh && echo 'Bundle preparation completed'"
+    },
+    "app-store": {
+      "extends": "production",
+      "distribution": "store",
+      "ios": {
+        "resourceClass": "m1-medium",
+        "image": "latest",
+        "credentialsSource": "remote",
+        "buildConfiguration": "Release"
+      },
       "autoIncrement": true
     }
   },
   "submit": {
     "production": {
       "ios": {
-        "appleId": "jayg44@sbcglobal.net", 
+        "appleId": "jayg44@sbcglobal.net",
         "ascAppId": "6747609548",
         "appleTeamId": "H82MG3CLF3",
         "bundleIdentifier": "com.forbesyprojects.deductly"

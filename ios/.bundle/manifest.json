@@ -1,0 +1,7 @@
+{
+  "bundleType": "ios",
+  "entryFile": "App.js",
+  "bundleFile": "main.jsbundle",
+  "timestamp": "1751853519",
+  "generatedBy": "prepare-ios-bundle.sh"
+}
